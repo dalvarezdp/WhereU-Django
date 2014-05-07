@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block titulo %}WhereU{% endblock %}
+
+{% block style_css %}{% endblock %}
+
+{% block navegacion %}
+<nav>
+	<ul>
+		<li><a href="/">Mis eventos</a></li>
+		<li><a href="/ruta/nueva/">Crear evento</a></li>
+		<li><a href="/cerrar">Salir</a></li>
+		<li><a href="">{{usuario.username|upper}}</a></li>
+	</ul>
+	<span class="arrow"></span>
+</nav>
+{% endblock %}
+
+{% block lateralIzqierdo %}
+<!-- Start Logo -->
+<a href="#home" class="logo">
+	<img src="{{STATIC_URL}}img/light-logo.png" alt="Fluid App" alt="Vi Smart"/>
+</a>
+<!-- End Logo -->
+<span class="tagline">Aquí va un subtítulo del Eslogan</span>
+<p>
+	Una breve explicacación o descripcion de entrada a nuestro servicio, esto siempre se va a mostrar en la parte de la derecha siempre y cuando el usuario no esté registrado.
+</p>
+<div class="buttons">
+<!--
+	<a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" class="large_button" id="apple" target="_blank">
+		<span class="icon"></span>
+		<em>Disponible per</em> iPhone
+	</a>
+-->
+	<a href="#" class="large_button" id="android">
+		<span class="icon"></span>
+		<em>Botón de Únete</em> Únete
+	</a>
+</div>
+			
+<div class="price centered"> <!-- Alignments options: right_align, left_align, centered -->
+	<p>Prueba la única aplicación para administrar tus quedadas.</p>
+</div>
+{% endblock %}	
+
+
+{% block contenido %}
+
+<div id="team" class="page">
+				
+				<h1>L'equip</h1>
+				
+				<div class="about_us content_box">
+					<div class="one_half">
+						<h2>Sobre nosaltres</h2>
+						<p>Som una parella amb inquietuds. Ens estimem la nostra terra i tenim ganes de donar-la a con&egrave;ixer. Per aix&ograve; hem creat <a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" target="_blank">Vi Smart</a>, perqu&egrave; a trav&eacute;s del món del vi t'apropis d'una manera diferent a Catalunya. Posant a les teves mans una pe&ccedil;a que faltava per donar continuïtat a l'esfor&ccedil; humà que fan els cellers per arribar a qui en definitiva tastarà els seus vins, o sigui, tu.</p>
+					</div>
+
+					<div class="one_half column_last">
+						<img src="images/about-main.png" alt="" />
+					</div>
+				</div>
+</div>
+
+
+
+
+
+
+
+
+<h1>Lista de eventos</h1>
+<br>
+	{% for dato in usuarios %}
+	<blockquote>
+	  <p>{{dato.username|capfirst}}</p>
+	   {% for item in entradas %}
+		{% if item.usuario == dato %}
+	  	    <small>{{item}}</small>
+		{% endif %}
+	   {% empty %}
+		<p>Este usuario no ha registrado entradas aun.</p>
+	   {% endfor %}
+	</blockquote>
+	{% empty %}
+		<p>Ningun usuario ha registrado entradas aun.</p>
+	{% endfor %}
+
+{% endblock %}
+
+{% block piePagina %}{% endblock %}

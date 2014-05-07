@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+
+{% block titulo %}WhereU{% endblock %}
+
+{% block style_css %}{% endblock %}
+
+{% block script %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&key=AIzaSyDUdzIVip2A3MGym1gWg497I9qI53xqx18"></script>
+
+
+<script>
+var latlng
+
+function success(position) {  
+	 var status = document.querySelector('#status');  
+	 status.innerHTML = "¡Le encontramos!";  
+	  
+	 var mapcanvas = document.createElement('div');  
+	 mapcanvas.id = 'mapcanvas';  
+	 mapcanvas.style.height = '100px';  
+	 mapcanvas.style.width = '250px';  
+	  
+	 document.querySelector('#map2').appendChild(mapcanvas);  
+	  
+	 latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);  
+	 var myOptions = {  
+		 zoom: 15,  
+		 center: latlng,   
+		 icon: "{{STATIC_URL}}img/personal.png", 
+		 mapTypeId: google.maps.MapTypeId.ROADMAP  
+	 };  
+	 var map2 = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);  
+	 
+	 marca = new google.maps.Marker({
+	    position: latlng,
+	    map: map2,
+	    icon: "{{STATIC_URL}}img/personal.png", 
+	    title: 'Usted está aquí.'	
+	});
+	 
+	 document.form_mapa2.latitud.value = position.coords.latitude;
+	 document.form_mapa2.longitud.value = position.coords.longitude;
+}  
+
+
+function error(msg) {  
+ var status = document.getElementById('status');  
+ status.innerHTML= "Error [" + error.code + "]: " + error.message;   
+}  
+  
+if (navigator.geolocation) {  
+ navigator.geolocation.getCurrentPosition(success, error,{maximumAge:60000, timeout: 4000}); 
+} else {  
+ error('Su navegador no tiene soporte para su geolocalización');  
+}
+
+
+
+
+
+
+// VARIABLES GLOBALES JAVASCRIPT
+	var geocoder;
+	var marker;
+	var latLng;
+	var latLng2;
+	var map;
+
+function initialize(){
+	
+	geocoder = new google.maps.Geocoder();
+	latLng = new google.maps.LatLng({{personal.latitud}},{{personal.longitud}})
+    var options = {
+        zoom: 14, 
+        center: latLng, 
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('map'), options);
+    
+    // CREACION DEL MARCADOR  
+    marker = new google.maps.Marker({
+	    position: latLng,
+	    title: 'Arrastra el marcador si quieres moverlo',
+	    map: map,
+	    icon: "{{STATIC_URL}}img/personal.png", 
+	    draggable: true
+	});
+    
+    // Escucho el CLICK sobre el mama y si se produce actualizo la posicion del marcador 
+    google.maps.event.addListener(map, 'click', function(event) {
+     updateMarker(event.latLng);
+    });
+    
+    // Escucho el CLICK sobre el mama y si se produce actualizo la posicion del marcador 
+     google.maps.event.addListener(map, 'click', function(event) {
+     updateMarker(event.latLng);
+   });
+  
+   // Inicializo los datos del marcador
+   //    updateMarkerPosition(latLng);
+     
+      geocodePosition(latLng);
+ 
+   // Permito los eventos drag/drop sobre el marcador
+   google.maps.event.addListener(marker, 'dragstart', function() {
+     updateMarkerAddress('Arrastrando...');
+   });
+ 
+   google.maps.event.addListener(marker, 'drag', function() {
+     updateMarkerStatus('Arrastrando...');
+     updateMarkerPosition(marker.getPosition());
+   });
+ 
+   google.maps.event.addListener(marker, 'dragend', function() {
+     updateMarkerStatus('Arrastre finalizado');
+     geocodePosition(marker.getPosition());
+   });
+}
+
+	// Permito la gesti¢n de los eventos DOM
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	// ESTA FUNCION OBTIENE LA DIRECCION A PARTIR DE LAS COORDENADAS POS
+	function geocodePosition(pos) {
+	  geocoder.geocode({
+	    latLng: pos
+	  }, function(responses) {
+	    if (responses && responses.length > 0) {
+	      updateMarkerAddress(responses[0].formatted_address);
+	    } else {
+	      updateMarkerAddress('No puedo encontrar esta direccion.');
+	    }
+	  });
+	}
+	
+	// OBTIENE LA DIRECCION A PARTIR DEL LAT y LON DEL FORMULARIO
+	function codeLatLon() { 
+	      str= document.form_mapa.longitud.value+" , "+document.form_mapa.latitud.value;
+	      latLng2 = new google.maps.LatLng(document.form_mapa.latitud.value ,document.form_mapa.longitud.value);
+	      marker.setPosition(latLng2);
+	      map.setCenter(latLng2);
+	      geocodePosition (latLng2);
+	      // document.form_mapa.direccion.value = str+" OK";
+	}
+	
+	// OBTIENE LAS COORDENADAS DESDE lA DIRECCION EN LA CAJA DEL FORMULARIO
+	function codeAddress() {
+	        var address = document.form_mapa.direccion.value;
+	          geocoder.geocode( { 'address': address}, function(results, status) {
+	          if (status == google.maps.GeocoderStatus.OK) {
+	             updateMarkerPosition(results[0].geometry.location);
+	             marker.setPosition(results[0].geometry.location);
+	             map.setCenter(results[0].geometry.location);
+	           } else {
+	            alert('ERROR : ' + status);
+	          }
+	        });
+	      }
+	
+	// OBTIENE LAS COORDENADAS DESDE lA DIRECCION EN LA CAJA DEL FORMULARIO
+	function codeAddress2 (address) {
+	          
+	          geocoder.geocode( { 'address': address}, function(results, status) {
+	          if (status == google.maps.GeocoderStatus.OK) {
+	             updateMarkerPosition(results[0].geometry.location);
+	             marker.setPosition(results[0].geometry.location);
+	             map.setCenter(results[0].geometry.location);
+	             document.form_mapa.direccion.value = address;
+	           } else {
+	            alert('ERROR : ' + status);
+	          }
+	        });
+	      }
+	
+	function updateMarkerStatus(str) {
+	  document.form_mapa.direccion.value = str;
+	}
+	
+	// RECUPERO LOS DATOS LON LAT Y DIRECCION Y LOS PONGO EN EL FORMULARIO
+	function updateMarkerPosition (latLng) {
+	  document.form_mapa.longitud.value =latLng.lng();
+	  document.form_mapa.latitud.value = latLng.lat();
+	}
+	
+	function updateMarkerAddress(str) {
+	  document.form_mapa.direccion.value = str;
+	}
+	
+	// ACTUALIZO LA POSICION DEL MARCADOR
+	function updateMarker(location) {
+	        marker.setPosition(location);
+	        updateMarkerPosition(location);
+	        geocodePosition(location);
+	      }	
+		
+
+</script>
+{% endblock %}
+
+{% block navegacion %}
+<nav>
+	<ul>
+		<li><a href="/">Mis eventos</a></li>
+		<li><a href="/gente">Gente</a></li>
+		<li><a href="/ruta/nueva/"><b>Crear evento</b></a></li>
+		<li><a href="/cerrar">Salir</a></li>
+		<li><a href="/">{{usuario.username|upper}}</a></li>
+	</ul>
+	<span class="arrow"></span>
+</nav>
+{% endblock %}
+
+{% block lateralIzqierdo %}
+<!-- Start Logo -->
+	
+	{% if personal.foto == "default" %}
+    	<img src='{{STATIC_URL}}img/huevo.jpg' width="60" height="60" style="-webkit-border-radius:  5px; -moz-border-radius: 5px; border-radius: 5px;" />
+    {% else %}
+    	<img src="{{MEDIA_URL}}{{personal.foto}}" width="230" height="160" style="-webkit-border-radius:  5px; -moz-border-radius: 5px; border-radius: 5px;" />
+    {% endif %}
+
+
+<!-- End Logo -->
+<br /><br />
+{% if usuario.first_name != "" %}
+	<span class="tagline">
+		{{usuario.first_name}} {{usuario.last_name}}<br />
+		{{usuario.email}}<br />
+		{{personal.profesion}}
+		{{personal.nacimiento}}
+	</span>
+{% endif %}
+
+<a href='/amigos'><b>Ver Amigos</b></a> |
+<a href='{% url principal.views.modificar_perfil personal.id %}'><b>Modificar Perfil</b></a>
+
+<div align="right">
+<!--
+	<a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" class="large_button" id="apple" target="_blank">
+		<span class="icon"></span>
+		<em>Disponible per</em> iPhone
+	</a>
+-->
+	<br />
+	<p id="status">Buscando su localización...</p>  
+	<div id="map2"></div>
+	<br />
+	<form name="form_mapa2" action="/localizar" method="post" >{% csrf_token %}
+		<input type="hidden" name="latitud" value="" />
+		<input type="hidden" name="longitud" value="" />
+		<br /><br />
+		<button type="submit" class="large_button" id="android">Guardar localización</button>
+	</form>
+<!--
+	<a href="#" class="large_button" id="android">
+		<span class="icon"></span>
+		<em>Botón de Localización</em> Localízate
+	</a>
+-->
+</div>
+			
+<div class="price right_align" > <!-- Alignments options: right_align, left_align, centered -->
+	<p>Actualiza tu ubicación para que puedan verte.</p>
+</div>
+{% endblock %}	
+
+
+{% block contenido %}
+<h1>Nuevo evento</h1>
+
+<center>
+	<div id="contact_form">
+		<div id="map" style="width:450px;height:300px;"></div><br />
+		<form name="form_mapa" id='formulario' method='post' enctype='multipart/form-data' action=''>{% csrf_token %}
+			<table>
+				<tr>
+				    <td><p>Dirección:</p></td>
+				    <td style="margin-left: 20px"><input type="text" name="direccion" id="direccion" value="" style="width: 350px;font-size: 10px;font-family: verdana;font-weight: bold;" /></td>
+					<td><input type="button" class="button white" value="Buscar" onclick="codeAddress()"></td>
+				</tr>
+				<tr>
+				    <td><p>Latitud:</p></td>
+				    <td style="margin-left: 20px"><input type="text" name="latitud" value="" style="width: 100px;font-size: 10px;font-family: verdana;font-weight: bold;" /></td>
+				</tr>
+				<tr>
+				    <td><p>Longitud:</p></td>
+				    <td style="margin-left: 20px"><input type="text" name="longitud" value="" style="width: 100px;font-size: 10px;font-family: verdana;font-weight: bold;" /></td>
+				</tr>
+				<tr>
+				    <td><p>Nombre de ruta:</p></td>
+				    <td style="margin-left: 20px">{{ formulario.nombreRuta }}</td>
+				</tr>
+				<tr>
+				    <td><p>Descripción:</p></td>
+				    <td style="margin-left: 20px">{{ formulario.descripcion}}</td>
+				</tr>
+				<tr>
+				    <td><p>Imágen:</p></td>
+				    <td style="margin-left: 20px">{{ formulario.fotoRuta}}</td>
+				</tr>
+				<tr>
+				    <td><p>Amigos:</p></td>
+				    <td style="margin-left: 20px">{{ formulario.amigos}}</td>
+				</tr>
+				<tr>
+				    <td><p>Fecha del evento:</p></td>
+				    <td style="margin-left: 20px">{{ formulario.fecha}}</td>
+				</tr>
+				<tr>
+				    <td></td>
+				    <td><input type="submit" class="button white" value="Registrar" /></td>
+				</tr>
+			</table>
+			<br />
+			
+		</form>
+	</div>
+</center>
+
+
+{% endblock %}
+
+{% block piePagina %}{% endblock %}

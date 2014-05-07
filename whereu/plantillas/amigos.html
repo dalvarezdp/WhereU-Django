@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block titulo %}WhereU{% endblock %}
+
+{% block style_css %}{% endblock %}
+
+{% block script %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&key=AIzaSyDUdzIVip2A3MGym1gWg497I9qI53xqx18"></script>
+
+<script>  
+var latlng
+
+function success(position) {  
+	 var status = document.querySelector('#status');  
+	 status.innerHTML = "¡Le encontramos!";  
+	  
+	 var mapcanvas = document.createElement('div');  
+	 mapcanvas.id = 'mapcanvas';  
+	 mapcanvas.style.height = '100px';  
+	 mapcanvas.style.width = '250px';  
+	  
+	 document.querySelector('#map').appendChild(mapcanvas);  
+	  
+	 latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);  
+	 var myOptions = {  
+		 zoom: 15,  
+		 center: latlng,   
+		 icon: "{{STATIC_URL}}img/personal.png", 
+		 mapTypeId: google.maps.MapTypeId.ROADMAP  
+	 };  
+	 var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);  
+	 
+	 marca = new google.maps.Marker({
+	    position: latlng,
+	    map: map,
+	    icon: "{{STATIC_URL}}img/personal.png", 
+	    title: 'Usted está aquí.'	
+	});
+	 
+	 document.form_mapa.latitud.value = position.coords.latitude;
+	 document.form_mapa.longitud.value = position.coords.longitude;
+}  
+
+
+function error(msg) {  
+ var status = document.getElementById('status');  
+ status.innerHTML= "Error [" + error.code + "]: " + error.message;   
+}  
+  
+if (navigator.geolocation) {  
+ navigator.geolocation.getCurrentPosition(success, error,{maximumAge:60000, timeout: 4000}); 
+} else {  
+ error('Su navegador no tiene soporte para su geolocalización');  
+}  
+  
+</script> 
+
+
+{% endblock %}
+
+{% block navegacion %}
+<nav>
+	<ul>
+		<li><a href="/">Mis eventos</a></li>
+		<li><a href="/gente">Gente</a></li>
+		<li><a href="/ruta/nueva/">Crear evento</a></li>
+		<li><a href="/cerrar">Salir</a></li>
+		<li><a href="/">{{usuario.username|upper}}</a></li>
+	</ul>
+	<span class="arrow"></span>
+</nav>
+{% endblock %}
+
+{% block lateralIzqierdo %}
+<!-- Start Logo -->
+	
+	{% if personal.foto == "default" %}
+    	<img src='{{STATIC_URL}}img/huevo.jpg' width="60" height="60" style="-webkit-border-radius:  5px; -moz-border-radius: 5px; border-radius: 5px;" />
+    {% else %}
+    	<img src="{{MEDIA_URL}}{{personal.foto}}" width="230" height="160" style="-webkit-border-radius:  5px; -moz-border-radius: 5px; border-radius: 5px;" />
+    {% endif %}
+
+
+<!-- End Logo -->
+<br /><br />
+{% if usuario.first_name != "" %}
+	<span class="tagline">
+		{{usuario.first_name}} {{usuario.last_name}}<br />
+		{{usuario.email}}<br />
+		{{personal.profesion}}
+		{{personal.nacimiento}}
+	</span>
+{% endif %}
+
+<a href='{% url principal.views.modificar_perfil personal.id %}'><b>Modificar Perfil</b></a>
+<br /><br />
+<div align="right">
+<!--
+	<a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" class="large_button" id="apple" target="_blank">
+		<span class="icon"></span>
+		<em>Disponible per</em> iPhone
+	</a>
+-->
+	<p id="status">Buscando su localización...</p>  
+	<div id="map"></div>
+	<br />
+	<form name="form_mapa" action="/localizar" method="post" >{% csrf_token %}
+		<input type="hidden" name="latitud" value="" />
+		<input type="hidden" name="longitud" value="" />
+		<br /><br />
+		<button type="submit" class="large_button" id="android">Guardar localización</button>
+	</form>
+<!--
+	<a href="#" class="large_button" id="android">
+		<span class="icon"></span>
+		<em>Botón de Localización</em> Localízate
+	</a>
+-->
+</div>
+			
+<div class="price right_align" > <!-- Alignments options: right_align, left_align, centered -->
+	<p>Actualiza tu ubicación para que puedan verte.</p>
+</div>
+{% endblock %}	
+
+
+
+{% block contenido %}
+<h1>Amigos</h1>
+<div class="press_mentions">
+		<ul>
+		{% for amigo in amigos %}
+			<li>						
+						<!--<div class="logo">-->
+						{% if amigo.amigo.foto == "default" %}
+							<img src='{{STATIC_URL}}img/huevo.jpg' width="75" height="65" style="float: left;"/>
+						{% else %}
+							<img src="{{MEDIA_URL}}{{amigo.amigo.foto}}" width="75" height="65" style="float: left;"/>
+						{% endif %}
+						<!--</div>-->
+						<div class="details">
+							<p align="justify">{{amigo.amigo.usuario.username}}</p>
+							<address>
+								{{ amigo.amigo.usuario.first_name }} {{ amigo.amigo.usuario.last_name }}
+								<a href='{% url principal.views.eliminar_amigo amigo.amigo.id %}'>Eliminar amigo</a>							
+							</address>
+											
+						</div>
+			</li>
+		{% empty %}
+			<p>No tienes ningun amigo.</p>
+		{% endfor %}
+
+
+{% endblock %}
+			
+
+{% block piePagina %}{% endblock %}

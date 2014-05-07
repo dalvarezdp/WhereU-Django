@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block titulo %}WhereU{% endblock %}
+
+{% block style_css %}{% endblock %}
+
+{% block navegacion %}
+<nav>
+	<ul>
+		<li><a href="/">Inicio</a></li>
+		<li><a href="/ingresar">Login</a></li>
+		<li><a href="/quees">¿Qué es?</a></li>
+		<li><a href="/conocenos">Conócenos</a></li>
+	</ul>
+	<span class="arrow"></span>
+</nav>
+{% endblock %}
+
+{% block lateralIzqierdo %}
+
+<!-- Start Logo -->
+<a href="#home" class="logo">
+	<img src='{{STATIC_URL}}img/WhereUlogo.png' width="100" height="150" />
+</a>
+<!-- End Logo -->
+<span class="tagline">Dime con quién te juntas...<br /> y te diré donde están.</span>
+<p>
+		WhereU? es una aplicación web que te permitirá estar al tanto de todos los eventos así como de las novedades en las que participes con tus amigos, permitiendo compartir las ubicaciones de cada uno de los participantes así como comentarios, fotos, etc.
+</p>
+<div class="buttons">
+<!--
+	<a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" class="large_button" id="apple" target="_blank">
+		<span class="icon"></span>
+		<em>Disponible per</em> iPhone
+	</a>
+-->
+	<a href="/registro" class="large_button" id="android">
+		<center><em>Botón de registro</em> Únete</center>
+	</a>
+</div>
+			
+<div class="price centered"> <!-- Alignments options: right_align, left_align, centered -->
+	<p>Prueba la única aplicación para administrar tus quedadas.</p>
+</div>
+
+{% endblock %}	
+    
+
+{% block contenido %}
+			
+			<h1>Que es WhereU</h1>
+				
+				<div class="about_us content_box">
+					<div class="one_half">
+						<h2>Crea eventos.</h2>
+						<p align="justify">Os permite localizar un lugar, invitar a vuestros amigos, indicarle una fecha y agregar una foto para el evento con una descripción sobre él y dejad que WhereU haga el resto.</p>
+					</div>
+
+					<div class="one_half column_last">
+						<img src="{{STATIC_URL}}img/evento.png" alt=""  width="200" height="150" align="right" />
+					</div>
+				</div>
+				<div class="about_us content_box">
+					<div class="one_half column_last">
+						<img src="{{STATIC_URL}}img/infoevento.png" alt=""  width="220" height="180"  />
+					</div>
+					<div class="one_half">
+						<h2>Infórmate sobre el evento.</h2>
+						<p align="justify">Podrás conocer tanto las fotos relacionadas con el evento, como ubicación real de cada uno de los amigos, el tiempo que tardará cada uno de ellos en llegar al destino, etc.</p>
+					</div>
+
+					
+				</div>
+				
+				<div class="about_us content_box">
+					<div class="one_half">
+						<h2>Comunícate con todos.</h2>
+						<p align="justify">Podrás comunicarte con todos los participantes del evento pudiendo así conocer a personas de cualquier lugar siempre teniendo al menos algún amigo en común, todo dependerá del creador del evento. La información que se tenga de usted como la ubicación solo será posible bajo su consentimiento.</p>
+					</div>
+					<div class="one_half column_last">
+						<img src="{{STATIC_URL}}img/comentarios.png" alt="" width="260" height="200" align="right"  />
+					</div>
+				</div>
+				
+				<div class="about_us content_box">
+					
+						<h2>Mucho más...</h2>
+						<p align="justify">Si fuera poco, podemos crear nuestras rutas privadas en las que nosotros podemos almacenar cualquier viaje que hayamos hecho y subir las fotos del mismo teniendo siempre disponible todo sobre el. Los comentarios, imagenes, lugares visitados, etc. Estaremos constantemente desarrollando nuevas mejoras para que la funcionalidad sea mas completa y facil de usar.</p>
+						<br/><br />
+				</div>
+				
+			</div>
+			 
+{% endblock %}
+
+{% block piePagina %}{% endblock %}

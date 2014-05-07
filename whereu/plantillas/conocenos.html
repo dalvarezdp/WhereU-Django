@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block titulo %}WhereU{% endblock %}
+
+{% block style_css %}{% endblock %}
+
+{% block navegacion %}
+<nav>
+	<ul>
+		<li><a href="/">Inicio</a></li>
+		<li><a href="/ingresar">Login</a></li>
+		<li><a href="/quees">¿Qué es?</a></li>
+		<li><a href="/conocenos">Conócenos</a></li>
+	</ul>
+	<span class="arrow"></span>
+</nav>
+{% endblock %}
+
+{% block lateralIzqierdo %}
+<!-- Start Logo -->
+<a href="#home" class="logo">
+	<img src='{{STATIC_URL}}img/WhereUlogo.png' width="100" height="150" />
+</a>
+<!-- End Logo -->
+
+<span class="tagline">Dime con quién te juntas...<br /> y te diré donde están.</span>
+<p>
+	WhereU? es una aplicación web que te permitirá estar al tanto de todos los eventos así como de las novedades en las que participes con tus amigos, permitiendo compartir las ubicaciones de cada uno de los participantes así como comentarios, fotos, etc.
+</p>
+<div class="buttons">
+<!--
+	<a href="http://itunes.apple.com/es/app/vi-smart/id550242916?mt=8" class="large_button" id="apple" target="_blank">
+		<span class="icon"></span>
+		<em>Disponible per</em> iPhone
+	</a>
+-->
+	<a href="/registro" class="large_button" id="android">
+		<center><em>Botón de registro</em> Únete</center>
+	</a>
+</div>
+			
+<div class="price centered"> <!-- Alignments options: right_align, left_align, centered -->
+	<p>Prueba la única aplicación para administrar tus quedadas.</p>
+</div>
+{% endblock %}	
+    
+
+{% block contenido %}
+				<h1>Conócenos</h1>
+				
+				<div class="about_us content_box">
+					<div class="one_half">
+						<h2>Sobre nosotros</h2>
+						<p align="justify">Somos un grupo de tres compañeros de clase de la asignatura de Ingenieria Web, los cuales tuvimos la idea de desarrollar una aplicación web que nos pudiera servir tanto para prensentarla como proyecto en este curso, y poder continuar mejorándola y refinándola en la asignatura de dispositivos móviles que se imparte en cuarto curso de la titulación de Grado en Ingeniería Informática en la especialidad Ingenieria del Software cursado en la Universidad de Córdoba.</p>
+					</div>
+
+					<div class="one_half column_last">
+						<br /><br /><br /><br />
+						<img src="{{STATIC_URL}}img/uco2.jpg" width="240" height="120" alt="" />
+					</div>
+				</div>
+				
+				<div class="team_members">
+					<div class="person one_half column_last">
+						<img src="{{STATIC_URL}}img/David.png" width="90" height="90" alt="David Álvarez" />
+						<h3>David Álvarez</h3>
+						<span>Analista y desarrollador</span>
+						<a href="/">www.whereU.com</a>
+						<ul class="social">
+<!--
+							<li class="facebook"><a href="">Facebook</a></li>
+-->
+							<li class="twitter"><a href="https://twitter.com/david11988" target="_blank">Twitter</a></li>
+							<li class="email"><a href="mailto:i92alpid@uco.es" title="i92alpid@uco.es">i92alpid@uco.es</a></li>
+<!--
+							<li class="dribbble"><a href="">Dribbble</a></li>
+-->
+						</ul>
+					</div>
+					<div class="person one_half">
+						<img src="{{STATIC_URL}}img/Pakeiro.png" width="90" height="90" alt="Paco López" />
+						<h3>Paco López</h3>
+						<span>Analista y desarrollador</span>
+						<a href="/">www.whereU.com</a>
+						<ul class="social">
+<!--
+							<li class="facebook"><a href="">Facebook</a></li>
+-->
+							<li class="twitter"><a href="https://twitter.com/Pakeiro87" target="_blank">Twitter</a></li>
+							<li class="email"><a href="mailto:i52locaf@uco.es" title="i52locaf@uco.es">i52locaf@uco.es</a></li>
+<!--
+							<li class="dribbble"><a href="">Dribbble</a></li>
+-->
+						</ul>
+					</div>
+					<div class="person one_half">
+						<img src="{{STATIC_URL}}img/Susana.png" width="90" height="90" alt="Susana García" />
+						<h3>Susana García</h3>
+						<span>Analista y desarrolladora</span>
+						<a href="/">www.whereU.com</a>
+						<ul class="social">
+<!--
+							<li class="facebook"><a href="">Facebook</a></li>
+-->
+							<li class="twitter"><a href="https://twitter.com/Susana_ga" target="_blank">Twitter</a></li>
+							<li class="email"><a href="mailto:i02gaars@uco.es" title="i02gaars@uco.es">i02gaars@uco.es</a></li>
+<!--
+							<li class="dribbble"><a href="">Dribbble</a></li>
+-->
+						</ul>
+					</div>
+				</div>
+{% endblock %}
+
+{% block piePagina %}{% endblock %}
